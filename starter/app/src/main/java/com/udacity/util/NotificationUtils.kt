@@ -15,7 +15,7 @@ val NOTIFICATION_ID = 0
 fun NotificationManager.sendNotification(messageBody: String, applicationContext: Context) {
     val contentIntent= Intent(applicationContext, DetailActivity::class.java)
 
-    // two share data between activities using putExtra
+    // to share data between activities using putExtra
     contentIntent.putExtra("fileName", MainActivity.fileName)
     contentIntent.putExtra("status", MainActivity.downloadStatus)
 

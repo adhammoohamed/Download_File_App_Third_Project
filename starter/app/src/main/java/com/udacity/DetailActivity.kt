@@ -31,9 +31,8 @@ class DetailActivity : AppCompatActivity() {
             statusTv.setTextColor(Color.RED)
         }
 
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
-
-        fab.setOnClickListener {
+        val okBtn = findViewById<Button>(R.id.ok_btn)
+        okBtn.setOnClickListener {
             //navigate to MainActivity
             val intent = Intent(this , MainActivity::class.java)
             startActivity(intent)

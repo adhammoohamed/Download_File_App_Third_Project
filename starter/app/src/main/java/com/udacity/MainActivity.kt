@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +21,6 @@ import kotlinx.android.synthetic.main.content_main.*
 class MainActivity : AppCompatActivity() {
 
     private var downloadID: Long = 0
-
     private lateinit var notificationManager: NotificationManager
     private var checkBox = false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,15 +76,14 @@ class MainActivity : AppCompatActivity() {
             val id = intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
 
             if (id == downloadID) {
+
                 if (checkDownloadStatus() == DownloadManager.STATUS_SUCCESSFUL) {
-                    Toast.makeText(this@MainActivity, "Download Succeed", Toast.LENGTH_SHORT).show()
                     downloadStatus = "Success"
                     notificationManager.sendNotification(messageBody, applicationContext)
+
                 } else {
-                    Toast.makeText(this@MainActivity, "failed", Toast.LENGTH_SHORT).show()
                     downloadStatus = "Failure"
                     notificationManager.sendNotification(messageBody, applicationContext)
-                    Log.i("Adham", "failed ${checkDownloadStatus()}")
                 }
             }
         }
