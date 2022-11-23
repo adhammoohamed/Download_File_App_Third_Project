@@ -5,10 +5,7 @@ import android.animation.AnimatorInflater
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.RectF
-import android.graphics.Typeface
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import kotlin.properties.Delegates
@@ -17,6 +14,8 @@ import kotlin.properties.Delegates
 class LoadingButton @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
+    val textRect = Rect()
+    private var textWidthSize = 0
     private var widthSize = 0
     private var heightSize = 0
     var paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -71,29 +70,11 @@ class LoadingButton @JvmOverloads constructor(
         paint.textSize = 70.0f
         paint.color = textColor
 
-        if (buttonState == ButtonState.Loading) {
-            // draw the animated button
-            paint.color = loadingBtnColor
-            canvas.drawRect(0.0f, 0.0f, width * progressValue, height.toFloat(), paint)
-
-            // draw the animated circle
-            paint.color = resources.getColor(R.color.colorAccent)
-            canvas.drawArc(
-                0f,
-                0f,
-                paint.textSize,
-                paint.textSize,
-                0f,
-                360f * progressValue,
-                true,
-                paint
-            )
-        }
-
         btnText = if (buttonState == ButtonState.Loading) loadingText
         else downloadText
 
-        // drawing the loading text
+        // drawing the text first time before animating
+        textWidthSize = paint.measureText(btnText).toInt()
         paint.color = textColor
         canvas.drawText(
             btnText,
@@ -101,6 +82,47 @@ class LoadingButton @JvmOverloads constructor(
             ((height + 33) / 2).toFloat(),
             paint
         )
+
+        // drawing all animating things
+        if (buttonState == ButtonState.Loading) {
+            // draw the animated button
+            paint.color = loadingBtnColor
+            canvas.drawRect(0.0f, 0.0f, width * progressValue, height.toFloat(), paint)
+
+            // drawing the loading text
+            textWidthSize = paint.measureText(btnText).toInt()
+
+            paint.color = textColor
+            canvas.drawText(
+                btnText,
+                ((widthSize - paint.textSize) / 2),
+                ((height + 33) / 2).toFloat(),
+                paint
+            )
+
+            // locate the circle to draw it behind the text
+            paint.getTextBounds(btnText , 0 , btnText.length , textRect)
+            val textRadius = textRect.height().toFloat()
+
+            canvas.translate(
+                (widthSize + textWidthSize + textRadius) /2f ,
+                heightSize /2f - textRadius / 2
+            )
+
+            // draw the animated circle
+            paint.color = resources.getColor(R.color.colorAccent)
+            canvas.drawArc(
+                0f,
+                0f,
+                textRadius,
+                textRadius,
+                0f,
+                360f * progressValue,
+                true,
+                paint
+            )
+        }
+
 
     }
 
