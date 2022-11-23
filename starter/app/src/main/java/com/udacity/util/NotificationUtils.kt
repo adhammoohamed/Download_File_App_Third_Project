@@ -38,6 +38,5 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
          contentPendingIntent
         )
         .setPriority(NotificationCompat.PRIORITY_LOW)
-
     notify(NOTIFICATION_ID , builder.build())
 }

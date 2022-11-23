@@ -19,10 +19,10 @@ import kotlinx.android.synthetic.main.content_main.*
 
 
 class MainActivity : AppCompatActivity() {
-
     private var downloadID: Long = 0
     private lateinit var notificationManager: NotificationManager
     private var checkBox = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -76,7 +76,6 @@ class MainActivity : AppCompatActivity() {
             val id = intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
 
             if (id == downloadID) {
-
                 if (checkDownloadStatus() == DownloadManager.STATUS_SUCCESSFUL) {
                     downloadStatus = "Success"
                     notificationManager.sendNotification(messageBody, applicationContext)
@@ -117,7 +116,6 @@ class MainActivity : AppCompatActivity() {
         query.setFilterById(downloadID)
         val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
         val cursor = downloadManager.query(query)
-
 
         if (cursor.moveToNext()) {
             val status = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)

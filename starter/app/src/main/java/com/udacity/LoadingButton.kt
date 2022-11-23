@@ -32,7 +32,7 @@ class LoadingButton @JvmOverloads constructor(
 
     val valueAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
 
-        duration = 1000
+        duration = 2000
 
         addUpdateListener {
             progressValue = this.animatedValue as Float
@@ -104,7 +104,7 @@ class LoadingButton @JvmOverloads constructor(
 
     }
 
-
+    // using this method to perform this block when user click
     override fun performClick(): Boolean {
         super.performClick()
         if (buttonState == ButtonState.Completed) {
